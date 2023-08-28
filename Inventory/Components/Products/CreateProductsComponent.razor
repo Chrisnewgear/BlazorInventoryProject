@@ -5,22 +5,22 @@
 <h1>
     <EditForm Model="oProduct">
         <div class="form-group small">
-            <label>Referencia:</label>
+            <label class="small">Referencia:</label>
             <InputText @bind-Value="oProduct.ProductId" class="form-control" />
         </div>
 
         <div class="form-group small">
-            <label>Producto:</label>
+            <label class="small">Producto:</label>
             <InputText @bind-Value="oProduct.ProductName" class="form-control" />
         </div>
 
         <div class="form-group small">
-            <label>Descripción:</label>
+            <label class="small">Descripción:</label>
             <InputTextArea @bind-Value="oProduct.ProductDescription" class="form-control" />
         </div>
 
         <div class="form-group small">
-            <label>Categoría:</label>
+            <label class="small">Categoría:</label>
             <InputSelect @bind-Value="oProduct.CategoryId" class="form-control">
                 @foreach (var category in categories)
                 {

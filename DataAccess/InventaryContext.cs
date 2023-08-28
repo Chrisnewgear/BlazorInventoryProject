@@ -25,8 +25,8 @@ namespace DataAccess
         {
             if (!options.IsConfigured)
             {
-                //options.UseSqlServer("Server=GM-DESARROLLO2\\MSSQL; DataBase=InventoryDb; user=sa; password=listosoft01@;");
-                options.UseSqlServer("Server=CHRIS; DataBase=InventoryDb; Integrated Security=True;");
+                options.UseSqlServer("Server=GM-DESARROLLO2\\MSSQL; DataBase=InventoryDb; user=sa; password=listosoft01@;");
+                //options.UseSqlServer("Server=CHRIS; DataBase=InventoryDb; Integrated Security=True;");
                 //options.UseSqlServer("Data Source=CHRIS;Initial Catalog=DBCARRITO;Integrated Security=True");
             }
         }

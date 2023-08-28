@@ -1,0 +1,62 @@
+﻿@using Entities
+@using Business
+@inject NavigationManager NavManager
+
+<h1>
+    <EditForm Model="oStorage">
+        <div class="form-group small">
+            <label class="small">Referencia:</label>
+            <InputText @bind-Value="oStorage.StorageId" class="form-control" />
+        </div>
+
+        @*<div class="form-group small">
+            <label class="small">Bodega:</label>
+            <InputText @bind-Value="oStorage.SLastUpdate" class="form-control" />
+        </div>*@
+
+        <div class="form-group small">
+            <label class="small">Dirección:</label>
+            <InputTextArea @bind-Text="oStorage.PartialQuantity" class="form-control" />
+        </div>
+
+        <div class="form-group small">
+            <label>Categoría:</label>
+            <InputSelect @bind-Value="oStorage.ProductId" class="form-control">
+                @foreach (var product in products)
+                {
+                    <option value="@product.ProductId">@product.ProductName</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="form-group small">
+            <label>Categoría:</label>
+            <InputSelect @bind-Value="oStorage.WarehouseId" class="form-control">
+                @foreach (var warehouse in warehouses)
+                {
+                    <option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
+                }
+            </InputSelect>
+        </div>
+
+        <input type="button" name="button" value="Guardar" @onclick="SaveStorage" class="btn btn-primary" />
+    </EditForm>
+</h1>
+
+@code {
+    StorageEntity oStorage = new StorageEntity();
+    List<ProductEntity> products = new List<ProductEntity>();
+    List<WarehouseEntity> warehouses = new List<WarehouseEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = B_Product.ProductList();
+        warehouses = B_Warehouse.WarehouseList();
+    }
+
+    private void SaveStorage()
+    {
+        B_Storage.CreateStorages(oStorage);
+        NavManager.NavigateTo("storage/list");
+    }
+}

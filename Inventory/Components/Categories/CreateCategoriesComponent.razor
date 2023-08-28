@@ -1,0 +1,35 @@
+﻿@using Entities
+@using Business
+@inject NavigationManager NavManager 
+
+<h1>
+    <EditForm Model="oCategory">
+        <div class="form-group small">
+            <label class="small">Referencia:</label>
+            <InputText @bind-Value="oCategory.CategoryId" class="form-control" />
+        </div>
+
+        <div class="form-group small">
+            <label class="small">Categoría:</label>
+            <InputText @bind-Value="oCategory.CategoryName" class="form-control" />
+        </div>
+
+        <input type="button" name="button" value="Guardar" @onclick="SaveProduct" class="btn btn-primary" />
+    </EditForm>
+</h1>
+
+@code {
+    CategoryEntity oCategory = new CategoryEntity();
+    List<CategoryEntity> categories = new List<CategoryEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = B_Category.CategoryList();
+    }
+
+    private void SaveProduct()
+    {
+        B_Category.CreateCategory(oCategory);
+        NavManager.NavigateTo("category/list");
+    }
+}
