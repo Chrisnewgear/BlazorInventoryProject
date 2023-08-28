@@ -10,7 +10,7 @@ namespace Business
 {
     public class B_InOut
     {
-        public List<InOutEntity> InOutList()
+        public static List<InOutEntity> InOutList()
         {
             using (var db = new InventaryContext())
             {
@@ -18,7 +18,7 @@ namespace Business
             }
         }
 
-        public void CreateInOut(InOutEntity oInOut)
+        public static void CreateInOut(InOutEntity oInOut)
         {
             using (var db = new InventaryContext())
             {
@@ -27,7 +27,7 @@ namespace Business
             }
         }
 
-        public void UpdateInOut(InOutEntity oInOut)
+        public static void UpdateInOut(InOutEntity oInOut)
         {
             using (var db = new InventaryContext())
             {

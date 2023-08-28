@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(InventaryContext))]
-    partial class InventaryContextModelSnapshot : ModelSnapshot
+    [Migration("20230826044147_HomeMIgration")]
+    partial class HomeMIgration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,31 +170,31 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            WarehouseId = "bdbc4140-b99f-493b-b43d-ab3f3a6aae50",
+                            WarehouseId = "820d2ce0-f837-4c34-bd56-97a113898cd8",
                             WarehouseAdress = "Alborada",
                             WarehouseName = "Bodega Central"
                         },
                         new
                         {
-                            WarehouseId = "cb316bb9-49c2-4c28-bb59-8a6cb4b4526b",
+                            WarehouseId = "a148a012-f778-4770-adea-8386ad178dad",
                             WarehouseAdress = "Esteros",
                             WarehouseName = "Bodega Sur"
                         },
                         new
                         {
-                            WarehouseId = "34b2357a-ac62-4fb0-833f-4bcf5e9ec423",
+                            WarehouseId = "aff50a42-527d-44b5-b666-fb08248774d0",
                             WarehouseAdress = "Mapasingue",
                             WarehouseName = "Bodega Oeste"
                         },
                         new
                         {
-                            WarehouseId = "ef554b1c-ac00-45b2-b307-40331e992f75",
+                            WarehouseId = "56d0b5d0-45d4-4592-933f-494ea6345ce1",
                             WarehouseAdress = "Centenario",
                             WarehouseName = "Bodega Este"
                         },
                         new
                         {
-                            WarehouseId = "c8b3e207-f7d7-4f6e-b250-1af343415b56",
+                            WarehouseId = "47e7b338-eabd-445d-b436-f739c96f6591",
                             WarehouseAdress = "La Garzota",
                             WarehouseName = "Bodega Norte"
                         });

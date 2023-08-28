@@ -10,15 +10,23 @@ namespace Business
 {
     public class B_Product
     {
-        public List<ProductEntity> ProductList()
+        public static List<ProductEntity> ProductList()
         {
             using (var db = new InventaryContext())
             {
                 return db.Products.ToList();
             }
         }
+        
+        public static ProductEntity ProductById(string id)
+        {
+            using (var db = new InventaryContext())
+            {
+                return db.Products.ToList().LastOrDefault(p => p.ProductId == id);
+            }
+        }
 
-        public void CreateProduct(ProductEntity oProduct)
+        public static void CreateProduct(ProductEntity oProduct)
         {
             using (var db = new InventaryContext())
             {
@@ -27,7 +35,7 @@ namespace Business
             }
         }
 
-        public void UpdateProduct(ProductEntity oProduct)
+        public static void UpdateProduct(ProductEntity oProduct)
         {
             using (var db = new InventaryContext())
             {
