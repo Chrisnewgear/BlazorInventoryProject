@@ -1,0 +1,66 @@
+﻿@using Entities
+@using Business
+@inject NavigationManager NavManager 
+
+<div class="form-group">
+    <select class="form-control" @onchange="OnChangedWarehouse">
+        <option value="">Seleccione una bodega</option>
+        @foreach(var warehouse in warehouses)
+        {
+            <option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
+        }
+    </select>
+</div>
+
+<hr />
+
+<EditForm Model="oInOut">
+    <div class="form-group small">
+        <label class="small">:</label>
+        <InputSelect class="form-control" @bind-Value="oInOut.StorageId">
+            <option value="">Seleccione un producto...</option>
+            @foreach (var storage in storages)
+            {
+                <option value="@storage.StorageId">@storage.Product.ProductName</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label>Ingrese cantidad</label>
+        <InputNumber class="form-control" @bind-Value="oInOut.Quantity" />
+    </div>
+
+    <div class="form-group">
+        <label>Es una entrada?</label>
+        <InputCheckbox class="form-control" @bind-Value="oInOut.IsInput" />
+    </div>
+
+    <input type="button" name="button" value="@buttonValue" @onclick="SaveInOut" class="btn btn-primary" />
+</EditForm>
+
+
+@code {
+    InOutEntity oInOut = new InOutEntity();
+    List<WarehouseEntity> warehouses = new List<WarehouseEntity>();
+    List<StorageEntity> storages = new List<StorageEntity>();
+
+    string buttonValue => oInOut.IsInput ? "Registrar Entrada" : "Registrar salida"; 
+
+    protected override async Task OnInitializedAsync()
+    {
+        warehouses = B_Warehouse.WarehouseList();
+    }
+
+    private void OnChangedWarehouse(ChangeEventArgs e)
+    {
+        var idWarehouse = e.Value.ToString();
+
+        storages = B_Storage.StorageProductsByWarehouse(idWarehouse);
+    }
+
+    private void SaveInOut()
+    {
+
+    }
+}

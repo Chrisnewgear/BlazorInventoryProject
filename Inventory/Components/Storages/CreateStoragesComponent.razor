@@ -2,51 +2,47 @@
 @using Business
 @inject NavigationManager NavManager
 
-<h1>
-    <EditForm Model="oStorage">
-        <div class="form-group small">
-            <label class="small">Referencia:</label>
-            <InputText @bind-Value="oStorage.StorageId" class="form-control" />
-        </div>
+<EditForm Model="oStorage">
+    <div class="form-group small">
+        <label>Bodegas:</label>
+        <InputSelect @bind-Value="oStorage.WarehouseId" class="form-control">
+            <option value="">Seleccione una bodega...</option>
+            @foreach (var warehouse in warehouses)
+            {
+                <option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group small">
+        <label>Productos:</label>
+        <InputSelect @bind-Value="oStorage.ProductId" class="form-control">
+            <option value="">Seleccione un producto...</option>
+            @foreach (var product in products)
+            {
+                <option value="@product.ProductId">@product.ProductName</option>
+            }
+        </InputSelect>
+    </div>
 
-        @*<div class="form-group small">
-            <label class="small">Bodega:</label>
-            <InputText @bind-Value="oStorage.SLastUpdate" class="form-control" />
-        </div>*@
+    @*<div class="form-group small">
+        <label class="small">Dirección:</label>
+        <InputTextArea @bind-Text="oStorage.PartialQuantity" class="form-control" />
+    </div>*@
 
-        <div class="form-group small">
-            <label class="small">Dirección:</label>
-            <InputTextArea @bind-Text="oStorage.PartialQuantity" class="form-control" />
-        </div>
+    <input type="button" name="button" value="Guardar" @onclick="SaveStorage" class="btn btn-primary" />
+</EditForm>
 
-        <div class="form-group small">
-            <label>Categoría:</label>
-            <InputSelect @bind-Value="oStorage.ProductId" class="form-control">
-                @foreach (var product in products)
-                {
-                    <option value="@product.ProductId">@product.ProductName</option>
-                }
-            </InputSelect>
-        </div>
-
-        <div class="form-group small">
-            <label>Categoría:</label>
-            <InputSelect @bind-Value="oStorage.WarehouseId" class="form-control">
-                @foreach (var warehouse in warehouses)
-                {
-                    <option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
-                }
-            </InputSelect>
-        </div>
-
-        <input type="button" name="button" value="Guardar" @onclick="SaveStorage" class="btn btn-primary" />
-    </EditForm>
-</h1>
+<div class="text-center h4">
+    @message
+</div>
 
 @code {
     StorageEntity oStorage = new StorageEntity();
-    List<ProductEntity> products = new List<ProductEntity>();
     List<WarehouseEntity> warehouses = new List<WarehouseEntity>();
+    List<ProductEntity> products = new List<ProductEntity>();
+
+    
+    string message;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,7 +52,19 @@
 
     private void SaveStorage()
     {
-        B_Storage.CreateStorages(oStorage);
-        NavManager.NavigateTo("storage/list");
+        oStorage.StorageId = $"{oStorage.WarehouseId}-{oStorage.ProductId}";
+        if (!B_Storage.IsProductInWarehouse(oStorage.StorageId))
+        {
+            oStorage.SLastUpdate = DateTime.Now;
+            B_Storage.CreateStorages(oStorage);
+
+            message = "Listo";
+        }
+        else
+        {
+            message = "Producto ya existe en la bodega";
+        }
+
+        //NavManager.NavigateTo("storage/list");
     }
 }
