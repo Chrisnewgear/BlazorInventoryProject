@@ -39,13 +39,19 @@
     <input type="button" name="button" value="@buttonValue" @onclick="SaveInOut" class="btn btn-primary" />
 </EditForm>
 
-
+<div class="text-center h4">
+    @message
+</div>
 @code {
     InOutEntity oInOut = new InOutEntity();
     List<WarehouseEntity> warehouses = new List<WarehouseEntity>();
     List<StorageEntity> storages = new List<StorageEntity>();
 
-    string buttonValue => oInOut.IsInput ? "Registrar Entrada" : "Registrar salida"; 
+    ProductEntity oProduct = new ProductEntity();
+    StorageEntity oStorage = new StorageEntity();
+
+    string buttonValue => oInOut.IsInput ? "Registrar Entrada" : "Registrar salida";
+    string message;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,6 +67,45 @@
 
     private void SaveInOut()
     {
+        oStorage = storages.LastOrDefault(s => s.StorageId == oInOut.StorageId);//Esto es para tener seleccionado un storage para poder guardar, se selecciona arriba en el InputSelect.
+        oProduct = oStorage.Product;
 
+        if (oInOut.IsInput)
+        {
+            oStorage.PartialQuantity = oStorage.PartialQuantity + oInOut.Quantity;
+            B_Storage.UpdateStorage(oStorage);
+
+            oProduct.TotalQuantity = oProduct.TotalQuantity + oInOut.Quantity;
+            B_Product.UpdateProduct(oProduct);
+
+            message = $"El producto {oProduct.ProductName}, ha sido actualizado";
+        }
+        else
+        {
+            if(IsBiggerThanZero(oInOut.Quantity, oStorage.PartialQuantity))
+            {
+                oStorage.PartialQuantity = oStorage.PartialQuantity - oInOut.Quantity;
+                B_Storage.UpdateStorage(oStorage);
+
+                oProduct.TotalQuantity = oProduct.TotalQuantity - oInOut.Quantity;
+                B_Product.UpdateProduct(oProduct);
+
+                message = $"El producto {oProduct.ProductName}, ha sido actualizado";
+            }
+            else
+            {
+                message = $"No existe la cantidad suficiente en bodega para el producto {oProduct.ProductName}";
+            }
+        }
+    }
+
+    private bool IsBiggerThanZero(int quantity, int storageQuantity)
+    {
+        if(storageQuantity > quantity)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
